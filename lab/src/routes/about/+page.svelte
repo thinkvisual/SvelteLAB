@@ -53,7 +53,7 @@
     </div>
   
     <div>
-      <label for="likes">3. Add Likes:</label>
+      <label for="likes">3. Add social actions:</label>
       <input type="number" id="likes" bind:value={likes} on:input={calculateEngagementRate} />
     </div>
   

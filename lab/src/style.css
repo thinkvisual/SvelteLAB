@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
 * {
   box-sizing: border-box;
   font-family: Arial, sans-serif;
@@ -7,14 +10,14 @@
 main {
     background-color: #fff;
     border: 1px solid #dddfe2;
-    border-radius: 8px;
+    border-radius: 0px;
     padding: 20px;
     margin: 20px auto;
     max-width: 500px;
   }
 
   h2 {
-    color: #21BF61;
+    color: #181a1b;
     font-size: 24px;
     font-weight: 600;
     text-align: left;
@@ -28,7 +31,7 @@ main {
     display: block;
   }
 
-  input[type="number"] {
+  input {
     width: 100%;
     padding: 10px;
     font-size: 16px;

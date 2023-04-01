@@ -1,65 +1,52 @@
 <script>
-    let impressions = 0;
-    let likes = 0;
-    let engagementRate = 0;
-    let averageEngagementRate = 0;
-    let percentageDifference = 0;
-  
-    const options = [
-  
-      { label: 'Organic', value: 0.5 },
-      { label: 'Paid', value: 0.5 },
-      { label: 'MDP', value: 1.2 },
-      
-    ];
-  
-    function calculateEngagementRate() {
-      engagementRate = ((likes / impressions) * 100).toFixed(2);
-      calculatePercentageDifference();
-    }
-  
-    function calculatePercentageDifference() {
-      percentageDifference = ((engagementRate - averageEngagementRate) / averageEngagementRate) * 100;
-      percentageDifference = isNaN(percentageDifference) ? 0 : percentageDifference.toFixed(2);
-    }
-  </script>
-  
-  
-  
-  <main>
-    <h2>Estimate impressions</h2>
-  
-    <!-- <div>
-      <label for="average-engagement-rate">1. Select social channel</label>
-      <select id="average-engagement-rate" bind:value={averageEngagementRate} on:change={calculatePercentageDifference}>
-        {#each options as option}
-        <option value={option.value}>{option.label}</option>
-        {/each}
-      </select>
-    </div> -->
-  
-    <div>
-      <label for="average-engagement-rate">1. Select social channel</label>
-      <select id="average-engagement-rate" bind:value={averageEngagementRate} on:change={calculatePercentageDifference}>
-        {#each options as option}
-          <option value={option.value}>{option.label} {option.value}</option>
-        {/each}
-      </select>
-    </div>
-  
-    <div>
-      <label for="impressions">2. Add Impressions:</label>
-      <input type="number" id="impressions" bind:value={impressions} on:input={calculateEngagementRate} />
-    </div>
-  
-    <div>
-      <label for="likes">3. Add Likes:</label>
-      <input type="number" id="likes" bind:value={likes} on:input={calculateEngagementRate} />
-    </div>
-  
-    {#if percentageDifference !== NaN}
-    <p>Engagement rate: {engagementRate}% ({percentageDifference > 0 ? '+' : ''}{percentageDifference}%)</p>
-    {/if}
-  </main>
-  
-  
+  // export let options1 = ['Option 1A', 'Option 1B', 'Option 1C'];
+  export let options2 = ['Option 2A', 'Option 2B', 'Option 2C'];
+  export let options3 = ['Option 3A', 'Option 3B', 'Option 3C'];
+  let selected1 = '';
+  let selected2 = '';
+  let selected3 = '';
+
+  function handleInput(event) {
+    selected1 = event.target.value;
+  }
+
+  function handleSelect2(event) {
+    selected2 = event.target.value;
+  }
+
+  function handleSelect3(event) {
+    selected3 = event.target.value;
+  }
+</script>
+
+<main>
+  <h2>Generate UTM</h2>
+
+  <div class="dropdown">
+    <label for="input1">Input 1:</label>
+    <input type="text" id="input1" on:input={handleInput}>
+  </div>
+
+  <div class="dropdown">
+    <label for="dropdown2">Dropdown 2:</label>
+    <select id="dropdown2" on:change={handleSelect2}>
+      {#each options2 as option}
+        <option value={option}>{option}</option>
+      {/each}
+    </select>
+  </div>
+
+  <div class="dropdown">
+    <label for="dropdown3">Dropdown 3:</label>
+    <select id="dropdown3" on:change={handleSelect3}>
+      {#each options3 as option}
+        <option value={option}>{option}</option>
+      {/each}
+    </select>
+  </div>
+
+  <div class="selected-options">
+    <p>UTM</p>
+    <p>{selected1}{selected2}{selected3}</p>
+  </div>
+</main>

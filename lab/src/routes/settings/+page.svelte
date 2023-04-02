@@ -1,52 +1,85 @@
 <script>
-  // export let options1 = ['Option 1A', 'Option 1B', 'Option 1C'];
-  export let options2 = ['Option 2A', 'Option 2B', 'Option 2C'];
-  export let options3 = ['Option 3A', 'Option 3B', 'Option 3C'];
-  let selected1 = '';
-  let selected2 = '';
-  let selected3 = '';
+  let url = "";
+  let utm_source = "";
+  let utm_medium = "";
+  let utm_campaign = "";
+  let utm_term = "";
+  let utm_content = "";
+  let utmCode = "";
 
-  function handleInput(event) {
-    selected1 = event.target.value;
-  }
-
-  function handleSelect2(event) {
-    selected2 = event.target.value;
-  }
-
-  function handleSelect3(event) {
-    selected3 = event.target.value;
+  function generateUTMCode() {
+    utmCode = `${url}?utm_source=${utm_source}&utm_medium=${utm_medium}&utm_campaign=${utm_campaign}&utm_term=${utm_term}&utm_content=${utm_content}`;
   }
 </script>
 
+<style>
+  /* Add your styles here */
+</style>
+
 <main>
-  <h2>Generate UTM</h2>
+  <h2>LAB Marketing UTM Generator</h2>
 
-  <div class="dropdown">
-    <label for="input1">Input 1:</label>
-    <input type="text" id="input1" on:input={handleInput}>
-  </div>
+  <form on:submit|preventDefault={generateUTMCode}>
+    <label>
+      URL:
+      <input type="text" bind:value={url} />
+    </label>
 
-  <div class="dropdown">
-    <label for="dropdown2">Dropdown 2:</label>
-    <select id="dropdown2" on:change={handleSelect2}>
-      {#each options2 as option}
-        <option value={option}>{option}</option>
-      {/each}
-    </select>
-  </div>
+    <label>
+      Source:
+      <select bind:value={utm_source}>
+        <option value="">Select source</option>
+        <option value="google">Google</option>
+        <option value="facebook">Facebook</option>
+        <option value="twitter">Twitter</option>
+      </select>
+    </label>
 
-  <div class="dropdown">
-    <label for="dropdown3">Dropdown 3:</label>
-    <select id="dropdown3" on:change={handleSelect3}>
-      {#each options3 as option}
-        <option value={option}>{option}</option>
-      {/each}
-    </select>
-  </div>
+    <label>
+      Medium:
+      <select bind:value={utm_medium}>
+        <option value="">Select medium</option>
+        <option value="cpc">CPC</option>
+        <option value="banner">Banner</option>
+        <option value="email">Email</option>
+      </select>
+    </label>
 
-  <div class="selected-options">
-    <p>UTM</p>
-    <p>{selected1}{selected2}{selected3}</p>
-  </div>
+    <label>
+      Campaign:
+      <select bind:value={utm_campaign}>
+        <option value="">Select campaign</option>
+        <option value="spring_sale">Spring Sale</option>
+        <option value="summer_promo">Summer Promo</option>
+        <option value="fall_discount">Fall Discount</option>
+      </select>
+    </label>
+
+    <label>
+      Term:
+      <select bind:value={utm_term}>
+        <option value="">Select term</option>
+        <option value="running_shoes">Running Shoes</option>
+        <option value="soccer_jerseys">Soccer Jerseys</option>
+        <option value="baseball_caps">Baseball Caps</option>
+      </select>
+    </label>
+
+    <label>
+      Content:
+      <select bind:value={utm_content}>
+        <option value="">Select content</option>
+        <option value="ad_a">Ad A</option>
+        <option value="ad_b">Ad B</option>
+        <option value="ad_c">Ad C</option>
+      </select>
+    </label>
+
+    <button type="submit">Generate UTM Code</button>
+  </form>
+
+  {#if utmCode}
+    <p>{utmCode}</p>
+  {/if}
 </main>
+

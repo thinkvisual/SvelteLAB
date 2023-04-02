@@ -8,6 +8,7 @@
     <a href="/settings">UTM Generator</a>
     <a href="/about">ER Calculator📈</a>
     <a href="/random">Random number</a>
+    <a href="/test">Test</a>
 </nav>
 
 <slot />

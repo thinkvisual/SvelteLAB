@@ -5,7 +5,8 @@
 <nav>
   <p>LAB Marketing Tools</p>
     <a href="/">Home</a>
-    <a href="/settings">UTM Generator</a>
+    <a href="/utm-1">UTM 1</a>
+    <a href="/utm-2">UTM 2</a>
     <a href="/about">ER Calculator📈</a>
     <a href="/random">Random number</a>
     <a href="/test">Test</a>

@@ -2,31 +2,52 @@
   let url = "";
   let labchannel = "";
   let labgeo = "";
+  let campaign = "";
   let utmCode = "";
 
   function generateUTMCode() {
-    utmCode = `${url}${labchannel}${labgeo}&utm_content=lab-2023`;
+    if (url && labchannel && labgeo && campaign) {
+      utmCode = `${url}${labchannel}${labgeo}&utm_content=lab-2023_${campaign}`.toLowerCase();
+    } else {
+      utmCode = "";
+    }
+  }
+
+  function copyUTMCode() {
+    let copyText = document.getElementById("utmCodeField");
+    copyText.select();
+    document.execCommand("copy");
   }
 </script>
 
 <style>
-  p {
-  word-wrap: break-word;
-}
+  #utmCodeField {
+    word-wrap: break-word;
+    width: 100%;
+  }
 </style>
 
 <main>
-  <h2>LAB Marketing UTM Generator</h2>
+  <h2>LAB UTM Generator</h2>
 
-  <form on:submit|preventDefault={generateUTMCode}>
+  <form on:input={generateUTMCode}>
     <label>
-      Add URL
+      URL
       <input type="text" bind:value={url} />
     </label>
 
+    <label>
+      Channel
+      <select bind:value={labchannel}>
+        <option value="">Select</option>
+        <option value="?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=organic">LinkedIn | Organic</option>
+        <option value="?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=paid">LinkedIn | Paid</option>
+        <option value="?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=mdp">LinkedIn | MDP</option>
+      </select>
+    </label>
 
     <label>
-      Select location
+      Geotarget
       <select bind:value={labgeo}>
         <option value="">Select</option>
         <option value="&utm_geo=lab">LAB</option>
@@ -36,25 +57,19 @@
       </select>
     </label>
 
-
     <label>
-      Select Channel
-      <select bind:value={labchannel}>
-        <option value="">Select</option>
-        <option value="?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=organic">LinkedIn | Organic</option>
-        <option value="?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=paid">LinkedIn | Paid</option>
-        <option value="?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=mdp">LinkedIn | MDP</option>
-      </select>
+      Campaign
+      <input type="text" bind:value={campaign}/>
     </label>
 
-
-
-
-    <button type="submit">Generate UTM Code</button>
   </form>
 
   {#if utmCode}
-    <p>{utmCode}</p>
+    <label>
+      Generated UTM Code
+      <textarea id="utmCodeField" rows="1" readonly>{utmCode}</textarea>
+      <button on:click={copyUTMCode}>Copy UTM Code</button>
+    </label>
   {/if}
-</main>
 
+</main>

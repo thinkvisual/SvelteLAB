@@ -1,78 +1,56 @@
 <script>
   let url = "";
-  let utm_source = "";
-  let utm_medium = "";
-  let utm_campaign = "";
-  let utm_term = "";
-  let utm_content = "";
+  let labchannel = "";
+  let labgeo = "";
+  let campaign = "";
   let utmCode = "";
 
   function generateUTMCode() {
-    utmCode = `${url}?utm_source=${utm_source}&utm_medium=${utm_medium}&utm_campaign=${utm_campaign}&utm_term=${utm_term}&utm_content=${utm_content}`;
+    utmCode = `${url}${labchannel}${labgeo}&utm_content=lab-2023_${campaign}`;
   }
 </script>
 
 <style>
-  /* Add your styles here */
+  p {
+  word-wrap: break-word;
+  text-transform: lowercase;
+}
 </style>
 
 <main>
-  <h2>LAB Marketing UTM Generator</h2>
+  <h2>LAB UTM Generator</h2>
 
   <form on:submit|preventDefault={generateUTMCode}>
     <label>
-      URL:
+      Add URL
       <input type="text" bind:value={url} />
     </label>
 
     <label>
-      Source:
-      <select bind:value={utm_source}>
-        <option value="">Select source</option>
-        <option value="google">Google</option>
-        <option value="facebook">Facebook</option>
-        <option value="twitter">Twitter</option>
+      Channel
+      <select bind:value={labchannel}>
+        <option value="">Select</option>
+        <option value="?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=organic">LinkedIn | Organic</option>
+        <option value="?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=paid">LinkedIn | Paid</option>
+        <option value="?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=mdp">LinkedIn | MDP</option>
+      </select>
+    </label>
+
+
+    <label>
+      Targeting
+      <select bind:value={labgeo}>
+        <option value="">Select</option>
+        <option value="&utm_geo=lab">LAB</option>
+        <option value="&utm_geo=lon">United Kingdom</option>
+        <option value="&utm_geo=ams">Netherlands</option>
+        <option value="&utm_geo=bru">Belgium</option>
       </select>
     </label>
 
     <label>
-      Medium:
-      <select bind:value={utm_medium}>
-        <option value="">Select medium</option>
-        <option value="cpc">CPC</option>
-        <option value="banner">Banner</option>
-        <option value="email">Email</option>
-      </select>
-    </label>
-
-    <label>
-      Campaign:
-      <select bind:value={utm_campaign}>
-        <option value="">Select campaign</option>
-        <option value="spring_sale">Spring Sale</option>
-        <option value="summer_promo">Summer Promo</option>
-        <option value="fall_discount">Fall Discount</option>
-      </select>
-    </label>
-
-    <label>
-      Term:
-      <select bind:value={utm_term}>
-        <option value="">Select term</option>
-        <option value="running_shoes">Running Shoes</option>
-        <option value="soccer_jerseys">Soccer Jerseys</option>
-        <option value="baseball_caps">Baseball Caps</option>
-      </select>
-    </label>
-
-    <label>
-      Content:
-      <select bind:value={utm_content}>
-        <option value="">Select content</option>
-        <option value="ad_a">Ad A</option>
-        <option value="ad_b">Ad B</option>
-        <option value="ad_c">Ad C</option>
-      </select>
+      Add campaign
+      <input type="text" bind:value={campaign}/>
     </label>
 
     <button type="submit">Generate UTM Code</button>

@@ -7,7 +7,9 @@
   let customField = ""; 
   let isUTMGenerated = false;
   let isCopied = false;
-  let team = ""; // Added team variable
+  let team = ""; 
+  let urlValidationMessage = "";
+  let urlValidationColor = "";
 
   const labchannelOptions = {
     organic: { value: "?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=organic", requiresGeo: true },
@@ -18,14 +20,14 @@
   function generateUTMCode() {
     const channelOption = labchannelOptions[labchannel];
     const geo = channelOption && channelOption.requiresGeo ? labgeo : '';
-    utmCode = `${url}${channelOption.value}${geo}&utm_content=lab-2023_${team}_${campaign}${labchannel === 'mdp' ? `_${customField}` : ''}`; // Added team to the end
+    utmCode = `${url}${channelOption.value}${geo}&utm_content=lab-2023_${team}_${campaign}${labchannel === 'mdp' ? `_${customField}` : ''}`;
     isUTMGenerated = true;
   }
 
   async function copyToClipboard() {
     await navigator.clipboard.writeText(utmCode);
     isCopied = true;
-    setTimeout(() => isCopied = false, 1500); // Reset after 3 seconds
+    setTimeout(() => isCopied = false, 1500);
   }
 
   function resetGenerator() {
@@ -35,15 +37,40 @@
     campaign = "";
     utmCode = "";
     customField = ""; 
-    team = ""; // Reset team
+    team = "";
     isUTMGenerated = false;
+    urlValidationMessage = "";
+    urlValidationColor = "";
   }
 
-
+  function validateURL() {
+    if(url === "") {
+      urlValidationMessage = "";
+      urlValidationColor = "";
+      return;
+    }
+    const urlPattern = new RegExp('^(https?:\\/\\/)?'+
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+
+      '(\\:\\d+)?'+
+      '(\\/[-a-z\\d%_.~+]*)*'+
+      '(\\?[;&amp;a-z\\d%_.~+=-]*)?'+
+      '(\\#[-a-z\\d_]*)?$','i'); 
+    if (!urlPattern.test(url)) {
+      urlValidationMessage = "Link is not valid";
+      urlValidationColor = "red";
+    } else if (!url.includes("bcg.com")) {
+      urlValidationMessage = "Link does not go to BCG.com";
+      urlValidationColor = "red";
+    } else {
+      urlValidationMessage = "Looks good";
+      urlValidationColor = "green";
+    }
+  }
 </script>
 
 <style>
-  p {
+  p.utm {
     word-wrap: break-word;
     text-transform: lowercase;
   }
@@ -71,18 +98,28 @@
     padding: 0;
   }
 
-  </style>
+  .validation-message {
+    margin-top: 0;
+  }
+
+input {
+  margin-bottom: 2px;
+}
+  
+
+</style>
 
 <main>
 <h2>LAB UTM Generator</h2>
 
 <form on:submit|preventDefault={generateUTMCode}>
   <label>
-    Add URL
-    <input type="text" bind:value={url} />
+    Paste URL
+    <input type="text" bind:value={url} on:input={validateURL} />
+    {#if urlValidationMessage}<p class="validation-message" style="color: {urlValidationColor};">{urlValidationMessage}</p>{/if}
   </label>
 
-  <label> <!-- The new drop-down menu -->
+  <label>
     Team
     <select bind:value={team}>
       <option value="" disabled selected hidden>Select</option>
@@ -138,7 +175,7 @@
 </form>
 
 {#if utmCode}
-  <p>{utmCode}</p>
+  <p class="utm">{utmCode}</p>
 {/if}
 
 {#if isUTMGenerated}

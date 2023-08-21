@@ -2,10 +2,10 @@
   // Hardcoded values
   let title = "Custom Open Graph Title";
   let description = "This is a custom description for the Open Graph card.";
-  let imageUrl = "/images/test-1.png"; // Assuming you have an image in your static/images directory
+  let imageUrl = "/images/test-1.png"; 
   let targetUrl = "https://careers.bcg.com/c/consulting-jobs";
 
-  // Redirect to the target URL on page load
+  // Immediate redirect
   import { onMount } from 'svelte';
 
   onMount(() => {

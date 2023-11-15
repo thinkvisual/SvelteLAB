@@ -14,7 +14,8 @@
   const labchannelOptions = {
     organic: { value: "?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=organic", requiresGeo: true },
     paid: { value: "?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=paid", requiresGeo: true },
-    mdp: { value: "?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=mdp", requiresGeo: false }
+    mdp: { value: "?utm_source=linkedin&utm_medium=social&utm_campaign=none&utm_description=mdp", requiresGeo: false },
+    email: { value: "?utm_source=email&utm_medium=email&utm_campaign=none&utm_description=email", requiresGeo: true }, // Added 'email' option
   };
 
   function generateUTMCode() {
@@ -63,7 +64,7 @@
       urlValidationMessage = "Link does not go to BCG.com";
       urlValidationColor = "red";
     } else {
-      urlValidationMessage = "Looks good";
+      urlValidationMessage = "Link looks good";
       urlValidationColor = "green";
     }
   }
@@ -102,83 +103,92 @@
     margin-top: 0;
   }
 
-input {
-  margin-bottom: 2px;
-}
-  
+  .field-group {
+    padding-bottom: 10px; /* Adjust the value to control the spacing */
+  }
+
 
 </style>
 
 <main>
-<h2>LAB UTM Generator</h2>
+  <h2>LAB UTM Generator</h2>
 
-<form on:submit|preventDefault={generateUTMCode}>
-  <label>
-    Paste URL
-    <input type="text" bind:value={url} on:input={validateURL} />
-    {#if urlValidationMessage}<p class="validation-message" style="color: {urlValidationColor};">{urlValidationMessage}</p>{/if}
-  </label>
-
-  <label>
-    Team
-    <select bind:value={team}>
-      <option value="" disabled selected hidden>Select</option>
-      <option value="S1">Climate</option>
-      <option value="S2">DT AI</option>
-      <option value="S3">Centre</option>
-      <option value="S4">CC&P</option>
-      <option value="S5">Alumni</option>
-      <option value="S6">Resilience</option>
-    </select>
-  </label>
-
-  <label>
-    Channel
-    <select bind:value={labchannel}>
-      <option value="" disabled selected hidden>Select</option>
-      <option value="organic">LinkedIn | Organic</option>
-      <option value="paid">LinkedIn | Paid</option>
-      <option value="mdp">LinkedIn | MDP</option>
-    </select>
-  </label>
-
-  {#if labchannel && labchannelOptions[labchannel].requiresGeo}
+  <form on:submit|preventDefault={generateUTMCode}>
     <label>
-      Location
-      <select bind:value={labgeo}>
+      Paste URL {#if urlValidationMessage}
+        <p class="validation-message" style="color: {urlValidationColor};">{urlValidationMessage}</p>
+      {:else}
+        <div style="margin-bottom: 30px;"></div> <!-- Add a blank space here -->
+      {/if}
+      <input type="text" bind:value={url} on:input={validateURL} /> 
+    </label>
+
+    <label>
+      Team
+      <select bind:value={team}>
         <option value="" disabled selected hidden>Select</option>
-        <option value="&utm_geo=lab">LAB</option>
-        <option value="&utm_geo=lon">United Kingdom</option>
-        <option value="&utm_geo=ams">Netherlands</option>
-        <option value="&utm_geo=bru">Belgium</option>
+        <option value="S1">Climate</option>
+        <option value="S2">DT AI</option>
+        <option value="S3">Centre</option>
+        <option value="S4">CC&P</option>
+        <option value="S5">Alumni</option>
+        <option value="S6">Resilience</option>
       </select>
     </label>
-  {:else if labchannel === 'mdp'}
-    <label>
-      MDP
-      <input type="text" bind:value={customField}/>
-    </label>
-  {/if}
 
-  {#if labchannel}
     <label>
-      Campaign
-      <input type="text" bind:value={campaign}/>
+      Channel
+      <select bind:value={labchannel}>
+        <option value="" disabled selected hidden>Select</option>
+        <option value="organic">LinkedIn | Organic</option>
+        <option value="paid">LinkedIn | Paid</option>
+        <option value="mdp">LinkedIn | MDP</option>
+        <option value="email">Email</option> <!-- Added 'email' option here -->
+      </select>
     </label>
 
-    {#if !isUTMGenerated}
-      <button class="btn" type="submit">Generate link</button>
-    {:else}
-      <button class="btn" type="button" on:click={copyToClipboard}>{isCopied ? 'Link copied!' : 'Copy link'}</button>
+    {#if labchannel && labchannelOptions[labchannel].requiresGeo}
+      <div class="field-group">
+        <label>
+          Location
+          <select bind:value={labgeo}>
+            <option value="" disabled selected hidden>Select</option>
+            <option value="&utm_geo=lab">LAB</option>
+            <option value="&utm_geo=lon">United Kingdom</option>
+            <option value="&utm_geo=ams">Netherlands</option>
+            <option value="&utm_geo=bru">Belgium</option>
+          </select>
+        </label>
+      </div>
+    {:else if labchannel === 'mdp'}
+      <div class="field-group">
+        <label>
+          MDP
+          <input type="text" bind:value={customField}/>
+        </label>
+      </div>
     {/if}
+
+    {#if labchannel}
+    <div class="field-group">
+      <label>
+        Campaign
+        <input type="text" bind:value={campaign}/>
+      </label>
+    </div>
+      {#if !isUTMGenerated}
+        <button class="btn" type="submit">Generate link</button>
+      {:else}
+        <button class="btn" type="button" on:click={copyToClipboard}>{isCopied ? 'Link copied!' : 'Copy link'}</button>
+      {/if}
+    {/if}
+  </form>
+
+  {#if utmCode}
+    <p class="utm">{utmCode}</p>
   {/if}
-</form>
 
-{#if utmCode}
-  <p class="utm">{utmCode}</p>
-{/if}
-
-{#if isUTMGenerated}
-  <button class="reset-button" type="button" on:click={resetGenerator}>Reset</button>
-{/if}
+  {#if isUTMGenerated}
+    <button class="reset-button" type="button" on:click={resetGenerator}>Reset</button>
+  {/if}
 </main>
